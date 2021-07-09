@@ -4,18 +4,21 @@ import (
     "fmt"
     "log"
 
+    "github.com/google/uuid"
     "github.com/gorilla/websocket"
 )
 
 type Client struct {
-    ID   string
-    Conn *websocket.Conn
-    Pool *Pool
+    ID        uuid.UUID
+    UserName  string
+    Conn      *websocket.Conn
+    Pool      *Pool
 }
 
 type Message struct {
-    Type int    `json:"type"`
-    Body string `json:"body"`
+    Type int       `json:"type"`
+    User uuid.UUID `json:"user"`
+    Body string    `json:"body"`
 }
 
 func (c *Client) Read() {
@@ -30,8 +33,8 @@ func (c *Client) Read() {
             log.Println(err)
             return
         }
-        message := Message{Type: messageType, Body: string(p)}
+        message := Message{Type: messageType, User: c.ID,Body: string(p)}
         c.Pool.Broadcast <- message
-        fmt.Printf("Message Received: %+v\n", message)
+        fmt.Printf("Message Received: %v %v\n", message.User, message.Body)
     }
 }

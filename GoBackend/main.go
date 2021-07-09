@@ -4,6 +4,7 @@ import (
     "fmt"
     "net/http"
 
+    "github.com/google/uuid"
     "github.com/Syssos/goact/pkg/websocket"
 )
 
@@ -15,8 +16,10 @@ func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
     }
 
     client := &websocket.Client{
-        Conn: conn,
-        Pool: pool,
+        ID:       uuid.New(),
+        UserName: "Computer",
+        Conn:     conn,
+        Pool:     pool,
     }
 
     pool.Register <- client
