@@ -7,6 +7,7 @@ import { connect, sendMsg } from "./api";
 import ChatHistory from './components/ChatHistory/ChatHistory';
 import ChatInput from './components/ChatInput/ChatInput';
 import Header from './components/Header/Header';
+import LoginForm from './components/LoginForm'
 
 class App extends Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class App extends Component {
   }
 
   render() {
+    if(!localStorage.getItem('username')) return <LoginForm />
     return (
       <div className="App">
         <Header />
