@@ -3,8 +3,16 @@ Goact is a Go + React based chatting app. Currently this application is at a fet
 
 The current state of the project is where the tutorial from [Tutorial Edge](https://tutorialedge.net/projects/chat-system-in-go-and-react/) leaves off. At its current point, it establishes a connection between the server and client, and elevates it to a web socket.
 
-## Dependancies
+<p align="center">
+  <img src="https://github.com/Syssos/goact/blob/main/GoactExample.png" alt="goact example img"/>
+</p>
 
+
+
+## Dependancies
+- [Go](https://golang.org/)
+	* UUID Package ([google/uuid](https://github.com/google/uuid))
+	* Websocket Package ([gorilla/websocket](github.com/gorilla/websocket))
 
 ## Project Plans
 Due to the nature of how the project will be worked on it is important to be online and public.
