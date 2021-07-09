@@ -13,6 +13,8 @@ The current state of the project is where the tutorial from [Tutorial Edge](http
 - [Go](https://golang.org/)
 	* UUID Package ([google/uuid](https://github.com/google/uuid))
 	* Websocket Package ([gorilla/websocket](github.com/gorilla/websocket))
+	
+- [Node.js & npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
 ## Project Plans
 Due to the nature of how the project will be worked on it is important to be online and public.
