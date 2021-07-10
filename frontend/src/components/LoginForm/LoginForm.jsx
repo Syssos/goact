@@ -11,20 +11,18 @@ const LoginForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		const authObject = { 'User-Name': username, 'User-Secret': password }
+		const authObject = { 'Username': username, 'Password': password }
+		console.log(authObject)
 
-	// 	try {
-			await axios.get('http://localhost:8080/validate', { headers: authObject });
-	// 		// Logged in
-			localStorage.setItem('username', username);
-			localStorage.setItem('password', password);
+		try {
+			await axios.get('http://localhost:8080/validate', { data: authObject });
 
-	// 		window.location.reload();
-	// 		} catch (error) {
-	// 			// Wrong sign-in information
-	// 			setError('Oops incorrect credentials...')
-	// 		}
+			window.location.reload();
+		} catch (error) {
+	 			// Wrong sign-in information
+				setError('Oops incorrect credentials...')
 		}
+	}
 
 	return (
 		<div className="wrapper">
