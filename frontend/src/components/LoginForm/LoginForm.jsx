@@ -15,7 +15,7 @@ const LoginForm = () => {
 		console.log(authObject)
 
 		try {
-			await axios.get('http://localhost:8080/validate', { data: authObject });
+			await axios.post('http://localhost:8080/validate', authObject, {withCredentials: true});
 
 			window.location.reload();
 		} catch (error) {

@@ -17,7 +17,7 @@ type Client struct {
 
 type Message struct {
     Type int       `json:"type"`
-    User uuid.UUID `json:"user"`
+    User string    `json:"user"`
     Body string    `json:"body"`
 }
 
@@ -33,7 +33,7 @@ func (c *Client) Read() {
             log.Println(err)
             return
         }
-        message := Message{Type: messageType, User: c.ID,Body: string(p)}
+        message := Message{Type: messageType, User: c.UserName,Body: string(p)}
         c.Pool.Broadcast <- message
         fmt.Printf("Message Received: %v %v\n", message.User, message.Body)
     }

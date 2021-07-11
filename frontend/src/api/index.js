@@ -3,16 +3,12 @@ var socket = new WebSocket("ws://localhost:8080/ws");
 
 let connect = cb => {
     console.log("Attempting Connection...");
-    socket.User = "Syssos";
-
-    console.log(socket)
 
     socket.onopen = () => {
       console.log("Successfully Connected");
     };
 
     socket.onmessage = msg => {
-      console.log(msg);
       cb(msg);
     };
 

@@ -20,6 +20,7 @@ func main() {
 
     r.Handle("/status", routes.StatusHandler).Methods("GET")
     r.Handle("/products", routes.ProductsHandler).Methods("GET")
+    r.Handle("/refresh", routes.Refresh).Methods("GET")
     r.Handle("/validate", routes.ValidateUser).Methods("POST")
     r.Handle("/ws", routes.WebSock).Methods("GET")
     r.Handle("/products/{slug}/feedback", routes.AddFeedbackHandler).Methods("POST")
