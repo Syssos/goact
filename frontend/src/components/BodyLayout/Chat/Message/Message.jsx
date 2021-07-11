@@ -12,7 +12,10 @@ class Message extends Component {
   }
 
   render() {
-    return <div className="Message">{this.state.message.user} - {this.state.message.body}</div>;
+    if (localStorage.getItem('User') === this.state.message.user) {
+      return <div className="Message me">{this.state.message.user} - {this.state.message.body}</div>
+    }
+    return <div className="Message other">{this.state.message.user} - {this.state.message.body}</div>;
   }
 }
 

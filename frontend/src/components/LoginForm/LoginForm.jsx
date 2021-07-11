@@ -16,6 +16,7 @@ const LoginForm = () => {
 
 		try {
 			await axios.post('http://localhost:8080/validate', authObject, {withCredentials: true});
+			localStorage.setItem('User', username);
 
 			window.location.reload();
 		} catch (error) {

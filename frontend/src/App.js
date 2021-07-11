@@ -4,8 +4,7 @@ import "./App.css";
 import { connect, sendMsg } from "./api";
 
 // Import our new component from it's relative path
-import ChatHistory from './components/ChatHistory/ChatHistory';
-import ChatInput from './components/ChatInput/ChatInput';
+import BodyLayout from './components/BodyLayout/BodyLayout';
 import Header from './components/Header/Header';
 import LoginForm from './components/LoginForm'
 
@@ -62,11 +61,15 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-        <ChatHistory chatHistory={this.state.chatHistory} />
-        <ChatInput send={this.send} />
+        <BodyLayout
+          chatHistory={this.state.chatHistory}
+          send={this.send}
+        />
       </div>
     );
   }
 }
 
 export default App;
+
+
