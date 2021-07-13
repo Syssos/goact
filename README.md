@@ -11,10 +11,15 @@ The current state of the project is where the tutorial from [Tutorial Edge](http
 
 ## Dependancies
 - [Go](https://golang.org/)
-	* UUID Package ([google/uuid](https://github.com/google/uuid))
-	* Websocket Package ([gorilla/websocket](github.com/gorilla/websocket))
-	
+	* UUID Package ([google/uuid](https://github.com/google/uuid))v1.2.0
+	* JWT Go ([dgrijalva/jwt-go](https://github.com/dgrijalva/jwt-go))v3.2.0
+	* Websocket Package ([gorilla/websocket](https://github.com/gorilla/websocket))v1.4.2
+	* Mux Router ([gorilla/mux](https://github.com/gorilla/mux))v1.8.0
+	* CORS Router ([rs/cors](https://github.com/rs/cors))v1.8.0
+
 - [Node.js & npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+	* [axios](https://www.npmjs.com/package/axios)
+	* [node-sass](https://www.npmjs.com/package/node-sass)
 
 ## Project Plans
 Due to the nature of how the project will be worked on it is important to be online and public.
