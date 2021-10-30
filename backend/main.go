@@ -6,24 +6,21 @@ import (
 
     "github.com/rs/cors"
     "github.com/gorilla/mux"
-    "github.com/Syssos/goact/pkg/routes"
+    "github.com/Syssos/goact/routes"
 )
 
 func main() {
     r := mux.NewRouter()
     go routes.TempPool.Start()
 
-    // We will setup our server so we can serve static assest like images, css from the /static/{file} route
+    // Static assest route handling for images, css, and static js from <url.com>/static/{file}
     r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
     r.Handle("/", http.FileServer(http.Dir("./views/")))
 
-    r.Handle("/status", routes.StatusHandler).Methods("GET")
-    r.Handle("/products", routes.ProductsHandler).Methods("GET")
     r.Handle("/refresh", routes.Refresh).Methods("GET")
     r.Handle("/validate", routes.ValidateUser).Methods("POST")
     r.Handle("/ws", routes.WebSock).Methods("GET")
-    r.Handle("/products/{slug}/feedback", routes.AddFeedbackHandler).Methods("POST")
 
     c := cors.New(cors.Options{
         AllowedOrigins: []string{"http://localhost:3000"},

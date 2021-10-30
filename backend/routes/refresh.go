@@ -5,11 +5,11 @@ import (
   "time"
   "net/http"
   
-
   "github.com/dgrijalva/jwt-go"
 )
 var Refresh = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// Checking if token exists from Login page
+    
+    // Checking if token exists from Login page
     cookie, err := r.Cookie("token")
     if err != nil {
     	if err == http.ErrNoCookie {

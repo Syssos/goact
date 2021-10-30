@@ -1,15 +1,15 @@
 package routes
 
 import (
-  "fmt"
-  "net/http"
+    "fmt"
+    "net/http"
   
-  "github.com/google/uuid"
-  "github.com/dgrijalva/jwt-go"
-  "github.com/Syssos/goact/pkg/websocket"	
+    "github.com/google/uuid"
+    "github.com/dgrijalva/jwt-go"
+    "github.com/Syssos/goact/models/chatroom"
 )
 
-func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
+func serveWs(room *chatroom.Room, w http.ResponseWriter, r *http.Request) {
     
     // Checking if token exists from Login page
     cookie, err := r.Cookie("token")
@@ -47,18 +47,18 @@ func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    conn, err := websocket.Upgrade(w, r)
+    conn, err := Upgrade(w, r)
     if err != nil {
         fmt.Fprintf(w, "%+v\n", err)
     }
 
-    client := &websocket.Client{
+    client := &chatroom.Client{
         ID:       uuid.New(),
         UserName: claims.Username,
         Conn:     conn,
-        Pool:     pool,
+        Room:     room,
     }
 
-    pool.Register <- client
+    room.Register <- client
     client.Read()
 }
