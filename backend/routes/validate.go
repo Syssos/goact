@@ -42,7 +42,6 @@ var ValidateUser = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request)
 	expectedPassword, ok := users[credentuals.Username]
 	if !ok || expectedPassword != credentuals.Password {
 		w.WriteHeader(http.StatusUnauthorized)
-		fmt.Println("Status Unauthorized")
 		return
 	}
 

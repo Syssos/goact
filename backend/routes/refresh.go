@@ -9,6 +9,11 @@ import (
 )
 var Refresh = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
     
+    if r.URL.Path != "/refresh" {
+		http.Error(w, "404 not found.", http.StatusNotFound)
+        return
+	}
+
     // Checking if token exists from Login page
     cookie, err := r.Cookie("token")
     if err != nil {
@@ -44,7 +49,7 @@ var Refresh = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         w.WriteHeader(http.StatusUnauthorized)
         return
     }
-
+    
     if time.Unix(claims.ExpiresAt, 0).Sub(time.Now()) > 60 * time.Second {
         w.WriteHeader(http.StatusBadRequest)
         return

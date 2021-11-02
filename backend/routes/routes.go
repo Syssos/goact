@@ -20,8 +20,10 @@ var upgrader = websocket.Upgrader{
 }
 
 func init() {
-  err := godotenv.Load(".env")
+  home := GetHomeDir()
+  err := godotenv.Load(home + "/go/goact/backend/.env")
   if err != nil {
+    log.Println(err)
     log.Fatalf("Error loading .env file")
   }
 
@@ -45,4 +47,15 @@ func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
   }
 
   return conn, nil
+}
+
+func GetHomeDir() string {
+  dirname, direrr := os.UserHomeDir()
+  check(direrr)
+
+  return dirname
+}
+
+func check(e error) {
+  log.Println(e)
 }
