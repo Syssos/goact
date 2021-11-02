@@ -1,5 +1,5 @@
 # Goact
-Goact is a Go + React based chatting app. This application is still being updated and modified with features, and is intended to be used as a starting point for chat based applications. At its current point, it establishes a connection between the server and client, and elevates it to a web socket. Then multiple users can interact with a chat room. Authentication is required, however to make it easy for others to utilize the code, users are hard coded into the backend. It is recommend that if this application is used for any project, a database, or equally efficient method of data storing is utilized.
+Goact is an early stage Go + ReactJS Chat application exoskeleton. What that means is this project is intended for being a way to generate a fast, efficient, and tested chat application, and deploy within minutes after minor styling changes, via its own service or as an integration into another react app as a component.
 
 <p align="center">
   <img src="https://github.com/Syssos/goact/blob/main/GoactExample.png" alt="goact example img"/>
@@ -17,11 +17,19 @@ Goact is a Go + React based chatting app. This application is still being update
 	* [axios](https://www.npmjs.com/package/axios)
 	* [node-sass](https://www.npmjs.com/package/node-sass)
 
-## Project Plans
-From this point forward the app will be modified for more practical means. I would like to use this space to explain some of the features that will be added over the course of the next couple weeks.
+## Project Details
+### Current Features:
 
-1. Chat control system (Means of controlling which poeple are conversating with eachother, Aka chat rooms)
-2. Additional User information (A method of storing and modifing additional information like profile pictures or statuses)
+Currently this app will handle multiple users interacting within one chat room. The accounts are not managed by a database so any database required can be implemented. Residing in the [.env](https://github.com/Syssos/goact/blob/main/backend/.env) file are 2 default accounts to be used during testing.
+
+The React front end will prompt the user to sign in before continuing to the application. The authentication is handled by signed JWT tokens, which are saved in the browser. If a user does not have an authentic cookie when interacting with the websocket, or while attempting to make a connection, they will get redirected to the signin page.
+
+### Future Feature Plans
+
+Unit and benchmark tests are currently being worked on.
+
+After testing is added, multiple scripts are going to be written to automate the installation and configuration of a database. Data storage will be vital in implementing multiple chat rooms and will need to be configured before doing so. Databases are a vastly more secure option when dealing with a production environment, this step will be introduced to save time down the line.
+
 
 ## Running Locally
 To get this project running local start by cloning this repository to a location on your local machine.
@@ -55,7 +63,6 @@ Once that the packages are installed, and the backend is running in the another 
 ```bash
 npm start
 ```
+## More Information
 
-## Known Issues
-
-While this app is buildable and runs, it is not in anymeans ready for a production enviornment. Primarily because the security is very lacking, but also because there is no form of control. These features are currently being worked on, once added the ability to run in a production environment will be more eligable
+For more information check out the Official Docs page for the project [here](https://docs.codyparal.com/?project=3&category=intro_ga)
