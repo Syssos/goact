@@ -7,9 +7,6 @@ install:
 
 go:
 - 1.x
-
-before_script:
-  - cd backend
   
 # script: pwd
 script: go test ./...
