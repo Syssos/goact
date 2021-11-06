@@ -2,6 +2,7 @@ package routes
 
 import (
     "os"
+    "os/user"
     "log"
     "net/http"
 
@@ -21,12 +22,12 @@ var upgrader = websocket.Upgrader{
 
 func init() {
     var filenameForT string
-    dirname := inquiryForm.GetHomeDir()
+    dirname := GetHomeDir()
 
     if travis_check() {
         filenameForT = "/home/travis/gopath/src/github.com/Syssos/goact/backend/.env"
     } else {
-        filenameForT = dirname + "/go/ResumeWebapp/.env"
+        filenameForT = dirname + "/go/goact/backend/.env"
     }
     err := godotenv.Load(filenameForT)
     if err != nil {
