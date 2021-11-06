@@ -1,0 +1,12 @@
+language: go
+
+install:
+  # Add Godeps dependencies to GOPATH and PATH
+  - cd backend
+  - go get -t -v ./...
+
+go:
+- 1.x
+  
+# script: pwd
+script: go test ./...

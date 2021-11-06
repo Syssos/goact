@@ -1,61 +1,82 @@
 package routes
 
 import (
-  "os"
-  "log"
-  "net/http"
+    "os"
+    "os/user"
+    "log"
+    "net/http"
 
-  "github.com/joho/godotenv"
-  "github.com/gorilla/websocket"
-  "github.com/Syssos/goact/models/chatroom"
+    "github.com/joho/godotenv"
+    "github.com/gorilla/websocket"
+    "github.com/Syssos/goact/models/chatroom"
 )
 
 var jwtKey = []byte{}
 var TempPool = chatroom.NewRoom()
 var users = map[string]string{}
 var upgrader = websocket.Upgrader{
-  ReadBufferSize:  1024,
-  WriteBufferSize: 1024,
-  CheckOrigin: func(r *http.Request) bool { return true },
+    ReadBufferSize:  1024,
+    WriteBufferSize: 1024,
+    CheckOrigin: func(r *http.Request) bool { return true },
 }
 
 func init() {
-  home := GetHomeDir()
-  err := godotenv.Load(home + "/go/goact/backend/.env")
-  if err != nil {
-    log.Println(err)
-    log.Fatalf("Error loading .env file")
-  }
+    var filenameForT string
+    dirname := GetHomeDir()
 
-  jwtKey= []byte(os.Getenv("APP_JWT_TOKEN"))
+    if travis_check() {
+        filenameForT = "/home/travis/gopath/src/github.com/Syssos/goact/backend/.env"
+    } else {
+        filenameForT = dirname + "/go/goact/backend/.env"
+    }
+    err := godotenv.Load(filenameForT)
+    if err != nil {
+        log.Println(err)
+        log.Fatalf("Error loading .env file")
+    }
 
-  users = map[string]string{
-    os.Getenv("TEST_USER1"): os.Getenv("TEST_PW1"),
-    os.Getenv("TEST_USER2"): os.Getenv("TEST_PW2"),
-  }
+    jwtKey= []byte(os.Getenv("APP_JWT_TOKEN"))
+
+    users = map[string]string{
+        os.Getenv("TEST_USER1"): os.Getenv("TEST_PW1"),
+        os.Getenv("TEST_USER2"): os.Getenv("TEST_PW2"),
+    }
 }
 
 var WebSock = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-  serveWs(TempPool, w, r)
+    serveWs(TempPool, w, r)
 })
 
 func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
-  conn, err := upgrader.Upgrade(w, r, nil)
-  if err != nil {
-      log.Println(err)
-      return nil, err
-  }
+    conn, err := upgrader.Upgrade(w, r, nil)
+    if err != nil {
+        log.Println(err)
+        return nil, err
+    }
 
-  return conn, nil
+    return conn, nil
 }
 
 func GetHomeDir() string {
-  dirname, direrr := os.UserHomeDir()
-  check(direrr)
+    dirname, direrr := os.UserHomeDir()
+    check(direrr)
 
-  return dirname
+    return dirname
 }
 
 func check(e error) {
-  log.Println(e)
+    log.Println(e)
 }
+
+func travis_check() bool {
+    user, err := user.Current()
+    if err != nil {
+        return false
+    }
+
+    if user.Username == "travis" {
+        return true
+    }
+
+    return false
+  }
