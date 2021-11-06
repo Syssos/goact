@@ -2,7 +2,8 @@ language: go
 
 install:
   # Add Godeps dependencies to GOPATH and PATH
-  - export GOPATH="${TRAVIS_BUILD_DIR}/backend:$GOPATH"
+  - cd backend
+  - go get -t -v ./...
 
 go:
 - 1.x
