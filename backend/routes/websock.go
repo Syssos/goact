@@ -37,8 +37,7 @@ func serveWs(room *chatroom.Room, w http.ResponseWriter, r *http.Request) {
     		w.WriteHeader(http.StatusUnauthorized)
     		return
     	}
-
-    	w.WriteHeader(http.StatusBadRequest)
+    	w.WriteHeader(http.StatusBadRequest) // triggered if token="IncorrectValueForSure", as well as if token is expired
     	return
     }
 

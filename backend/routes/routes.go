@@ -65,9 +65,11 @@ func GetHomeDir() string {
 }
 
 func check(e error) {
-    log.Println(e)
+    if e != nil {
+        log.Println(e)
+    }
 }
-
+    
 func travis_check() bool {
     user, err := user.Current()
     if err != nil {
