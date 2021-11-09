@@ -71,3 +71,28 @@ var ValidateUser = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request)
 			Expires: expirationTime,
 		})
 })
+
+func ValidateCookieFMT(r *http.Request) string {
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			return ""
+		}
+
+		return cookie.Value
+}
+
+func ValidateCookieJWT(tokenStr string) string {
+		claims := &Claims{}
+		tkn, err := jwt.ParseWithClaims(tokenStr, claims,
+			func(t *jwt.Token) (interface{}, error){
+				return jwtKey, nil
+			})
+
+    if err != nil {
+    	return ""
+    }
+    if !tkn.Valid {
+        return ""
+    }
+    return claims.Username
+}
