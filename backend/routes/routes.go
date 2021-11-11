@@ -2,23 +2,17 @@ package routes
 
 import (
     "os"
-    "os/user"
     "log"
+    "os/user"
     "net/http"
 
     "github.com/joho/godotenv"
-    "github.com/gorilla/websocket"
     "github.com/Syssos/goact/models/chatroom"
 )
 
 var jwtKey = []byte{}
 var TempPool = chatroom.NewRoom()
 var users = map[string]string{}
-var upgrader = websocket.Upgrader{
-    ReadBufferSize:  1024,
-    WriteBufferSize: 1024,
-    CheckOrigin: func(r *http.Request) bool { return true },
-}
 
 func init() {
     var filenameForT string
@@ -43,19 +37,17 @@ func init() {
     }
 }
 
+var ValidateUser = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    Validate(w, r)
+})
+
+var Refresh = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    RefreshToken(w, r)
+})
+
 var WebSock = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
     serveWs(TempPool, w, r)
 })
-
-func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
-    conn, err := upgrader.Upgrade(w, r, nil)
-    if err != nil {
-        log.Println(err)
-        return nil, err
-    }
-
-    return conn, nil
-}
 
 func GetHomeDir() string {
     dirname, direrr := os.UserHomeDir()
@@ -81,4 +73,4 @@ func travis_check() bool {
     }
 
     return false
-  }
+}

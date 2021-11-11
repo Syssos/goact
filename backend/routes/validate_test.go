@@ -1,11 +1,11 @@
 package routes
 
 import (
-    "net/http"
     "strings"
-    "net/http/httptest"
     "testing"
+    "net/http"
     "encoding/json"
+    "net/http/httptest"
 )
 
 func TestCredentuals(t *testing.T) {
@@ -71,34 +71,6 @@ func TestCredentuals(t *testing.T) {
             }
         } else {
             t.Errorf("Cookies not right %v", cookieCheck)
-        }
-    })
-}
-
-func BenchmarkNoCredsTime(b *testing.B) {
-    
-    b.Run("Testing Incorrect Creds", func(b *testing.B) {
-        request, _ := http.NewRequest(http.MethodPost, "/validate", strings.NewReader(createJson(Credentuals{Username: "sdfsdf", Password: "hgfjfgh"})))
-        w := httptest.NewRecorder()
-        handler := http.HandlerFunc(ValidateUser)
-  
-        b.ReportAllocs()
-        b.ResetTimer()
-  
-        for i := 0; i < b.N; i++ {
-            handler.ServeHTTP(w, request)
-        }
-    })
-    b.Run("Testing with Correct Creds", func(b *testing.B) {
-        request, _ := http.NewRequest(http.MethodPost, "/validate", strings.NewReader(createJson(Credentuals{Username: "TestUser1", Password: "SomeTestpwd"})))
-        w := httptest.NewRecorder()
-        handler := http.HandlerFunc(ValidateUser)
-  
-        b.ReportAllocs()
-        b.ResetTimer()
-  
-        for i := 0; i < b.N; i++ {
-            handler.ServeHTTP(w, request)
         }
     })
 }
