@@ -3,6 +3,7 @@ package routes
 import (
     "log"
     "fmt"
+    "errors"
     "net/http"
   
     "github.com/google/uuid"
@@ -11,6 +12,7 @@ import (
     "github.com/Syssos/goact/models/chatroom"
 )
 
+// Check origin is insecure due to bypassing CORS checks. This is overwritten for the sake of easily testing.
 var upgrader = websocket.Upgrader{
     ReadBufferSize:  1024,
     WriteBufferSize: 1024,
@@ -18,15 +20,14 @@ var upgrader = websocket.Upgrader{
 }
 
 func serveWs(room *chatroom.Room, w http.ResponseWriter, r *http.Request) {
-    tokenStr := ValidateCookieFMT(r)
-    if tokenStr != "" {
+    tokenStr, err := ValidateCookieFMT(r)
+    if err != nil {
         w.WriteHeader(http.StatusBadRequest)
         return
     }
 
-    ValidatedUser := ValidateCookieJWT(tokenStr)
-    fmt.Println(ValidatedUser)
-    if ValidatedUser == "" {        
+    ValidatedUser, err := ValidateCookieJWT(tokenStr)
+    if err != nil {
         w.WriteHeader(http.StatusUnauthorized)
         return
     }
@@ -47,16 +48,16 @@ func serveWs(room *chatroom.Room, w http.ResponseWriter, r *http.Request) {
     client.Read()
 }
 
-func ValidateCookieFMT(r *http.Request) string {
+func ValidateCookieFMT(r *http.Request) (string, error) {
     cookie, err := r.Cookie("Token")
     if err != nil {
-        return ""
+        return "", errors.New("Cookie token fmt error")
     }
 
-    return cookie.Value
+    return cookie.Value, nil
 }
 
-func ValidateCookieJWT(tokenStr string) string {
+func ValidateCookieJWT(tokenStr string) (string, error) {
     claims := &Claims{}
     tkn, err := jwt.ParseWithClaims(tokenStr, claims,
         func(t *jwt.Token) (interface{}, error){
@@ -65,12 +66,14 @@ func ValidateCookieJWT(tokenStr string) string {
 
     if err != nil {
         fmt.Println(err)
-        return ""
+        return "", err
     }
+
     if !tkn.Valid {
-        return ""
+        return "", errors.New("Cookie not valid")
     }
-    return claims.Username
+
+    return claims.Username, nil
 }
 
 func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {

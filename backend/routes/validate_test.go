@@ -10,9 +10,16 @@ import (
 
 func TestCredentuals(t *testing.T) {
     t.Run("Testing with no credentuals", func(t *testing.T) {
-        request, _ := http.NewRequest(http.MethodPost, "/validate", strings.NewReader(createJson(Credentuals{Username: "", Password: ""})))
+        creds := createJson(Credentuals{Username: "", Password: ""})
+
         response := httptest.NewRecorder()
+        request, err := http.NewRequest(http.MethodPost, "/validate", strings.NewReader(creds))
+        if err != nil {
+            t.Error("Error creating test request")
+        }
+
         ValidateUser(response, request)
+        
         got := response.Code
         want := 401
 
@@ -25,9 +32,16 @@ func TestCredentuals(t *testing.T) {
         }
     })
     t.Run("Testing with incorrect credentuals", func(t *testing.T) {
-        request, _ := http.NewRequest(http.MethodPost, "/validate", strings.NewReader(createJson(Credentuals{Username: "ThistWrong", Password: "invalid"})))
+        creds := createJson(Credentuals{Username: "ThistWrong", Password: "invalid"})
+        
         response := httptest.NewRecorder()
+        request, err := http.NewRequest(http.MethodPost, "/validate", strings.NewReader(creds))
+        if err != nil {
+            t.Error("Error creating test request")
+        }
+
         ValidateUser(response, request)
+        
         got := response.Code
         want := 401
 
@@ -40,9 +54,16 @@ func TestCredentuals(t *testing.T) {
         }
     })
     t.Run("Testing with special characters in credentuals", func(t *testing.T) {
-        request, _ := http.NewRequest(http.MethodPost, "/validate", strings.NewReader(createJson(Credentuals{Username: "&^(*%*&%@$*)*&@#$(", Password: "!@#$%^&*()_+{}|:\"<>?"})))
+        creds := createJson(Credentuals{Username: "&^(*%*&%@$*)*&@#$(", Password: "!@#$%^&*()_+{}|:\"<>?"})
+        
         response := httptest.NewRecorder()
+        request, err := http.NewRequest(http.MethodPost, "/validate", strings.NewReader(creds))
+        if err != nil {
+            t.Error("Error creating test request")
+        }
+
         ValidateUser(response, request)
+        
         got := response.Code
         want := 401
 
@@ -55,9 +76,16 @@ func TestCredentuals(t *testing.T) {
         }
     })
     t.Run("Testing with correct credentuals", func(t *testing.T) {
-        request, _ := http.NewRequest(http.MethodPost, "/validate", strings.NewReader(createJson(Credentuals{Username: "TestUser1", Password: "SomeTestpwd"})))
+        creds := createJson(Credentuals{Username: "TestUser1", Password: "SomeTestpwd"})
+        
         response := httptest.NewRecorder()
+        request, err := http.NewRequest(http.MethodPost, "/validate", strings.NewReader(creds))
+        if err != nil {
+            t.Error("Error creating test request")
+        }
+
         ValidateUser(response, request)
+        
         got := response.Code
         want := 200
 

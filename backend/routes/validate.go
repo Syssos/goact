@@ -1,7 +1,6 @@
 package routes
 
 import (
-  "fmt"
   "time"
   "net/http"
   "encoding/json"
@@ -20,20 +19,17 @@ type Credentuals struct {
 }
 
 func Validate(w http.ResponseWriter, r *http.Request) {
-	// ValidateUser is a function used to set a cookie to represent which data is signed in, each cookie has a refresh period and will
-	// last under 10 minutes if not refreshed again.
+	// This function is an API endpoint that generates a cookie to represent 
+	// the signed-in user each cookie has a refresh period of 10 minutes. 
+	// If not refreshed in that time the user will be foreced to login again.
 
-	// validate route
 	if r.URL.Path != "/validate" {
 		http.Error(w, "404 not found.", http.StatusNotFound)
-        return
+		return
 	}
-	
+
 	var credentuals Credentuals
-	
-	// Uptain data from frontend
-	err := json.NewDecoder(r.Body).Decode(&credentuals)
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&credentuals); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -45,8 +41,8 @@ func Validate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create claims used to track user
-	expirationTime := time.Now().Add(time.Minute * 8)
+	expirationTime := time.Now().Add(time.Minute * 10)
+	
 	claims := &Claims{
 		Username: credentuals.Username,
 		StandardClaims: jwt.StandardClaims{
@@ -54,12 +50,11 @@ func Validate(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	// Create a signed token string securing the claims authenticity
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Println("Status Internal Server Error:", err)
 		return
 	}
 
@@ -70,4 +65,5 @@ func Validate(w http.ResponseWriter, r *http.Request) {
 			Value: tokenString,
 			Expires: expirationTime,
 		})
+
 }
