@@ -49,7 +49,7 @@ func serveWs(room *chatroom.Room, w http.ResponseWriter, r *http.Request) {
 }
 
 func ValidateCookieFMT(r *http.Request) (string, error) {
-    cookie, err := r.Cookie("Token")
+    cookie, err := r.Cookie("token")
     if err != nil {
         return "", errors.New("Cookie token fmt error")
     }
