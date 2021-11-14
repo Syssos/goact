@@ -7,7 +7,8 @@ import (
   
   "github.com/dgrijalva/jwt-go"
 )
-var Refresh = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+func RefreshToken(w http.ResponseWriter, r *http.Request) {
     
     if r.URL.Path != "/refresh" {
 		http.Error(w, "404 not found.", http.StatusNotFound)
@@ -73,4 +74,4 @@ var Refresh = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
             Value: tokenString,
             Expires: expirationTime,
         })
-})
+}

@@ -14,7 +14,9 @@ func TestTokenRefresh(t *testing.T) {
     t.Run("Testing with no token", func(t *testing.T) {
         request, _ := http.NewRequest(http.MethodGet, "/refresh", nil)
         response := httptest.NewRecorder()
+        
         Refresh(response, request)
+        
         got := response.Code
         want := 401
 
@@ -29,10 +31,12 @@ func TestTokenRefresh(t *testing.T) {
 	t.Run("Testing token with long expiry timer", func(t *testing.T) {
         request, _ := http.NewRequest(http.MethodGet, "/refresh", nil)
         response := httptest.NewRecorder()
-		cookie := http.Cookie{Name: "token", Value: generateTokenString()}
+		
+		cookie := http.Cookie{Name: "token", Value: GenerateTokenString()}
 		request.AddCookie(&cookie)
         
 		Refresh(response, request)
+        
         got := response.Code
         want := 400
 
@@ -47,10 +51,12 @@ func TestTokenRefresh(t *testing.T) {
 	t.Run("Testing token with short expiry timer", func(t *testing.T) {
         request, _ := http.NewRequest(http.MethodGet, "/refresh", nil)
         response := httptest.NewRecorder()
-		cookie := http.Cookie{Name: "token", Value: generateAlmostExpired()}
+		
+		cookie := http.Cookie{Name: "token", Value: GenerateAlmostExpired()}
 		request.AddCookie(&cookie)
         
 		Refresh(response, request)
+        
         got := response.Code
         want := 200
 
@@ -92,7 +98,7 @@ func TestTokenRefresh(t *testing.T) {
     })
 }
 
-func generateTokenString() string {
+func GenerateTokenString() string {
 	request, _ := http.NewRequest(http.MethodPost, "/validate", strings.NewReader(createJson(Credentuals{Username: "TestUser1", Password: "SomeTestpwd"})))
 	response := httptest.NewRecorder()
 	ValidateUser(response, request)
@@ -100,8 +106,27 @@ func generateTokenString() string {
 	return response.Result().Cookies()[0].Value
 }
 
-func generateAlmostExpired() string {
+func GenerateAlmostExpired() string {
 	expirationTime := time.Now().Add(time.Second * 45)
+	claims := &Claims{
+		Username: "TestUser1",
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+	// Create a signed token string securing the claims authenticity
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString(jwtKey)
+	if err != nil {
+		return ""
+	}
+
+	return tokenString
+}
+
+func GenerateExpired() string {
+	count := 10
+	expirationTime := time.Now().Add(time.Duration(-count) * time.Minute)
 	claims := &Claims{
 		Username: "TestUser1",
 		StandardClaims: jwt.StandardClaims{

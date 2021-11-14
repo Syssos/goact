@@ -1,4 +1,4 @@
-# Goact
+# Goact ![travis-badge](https://app.travis-ci.com/Syssos/goact.svg?branch=main)
 Goact is an early stage Go + ReactJS Chat application exoskeleton. What that means is this project is intended for being a way to generate a fast, efficient, and tested chat application, and deploy within minutes after minor styling changes, via its own service or as an integration into another react app as a component.
 
 <p align="center">
