@@ -41,10 +41,8 @@ func (room *Room) Start() {
             }
             break
         case message := <-room.Broadcast:
-            fmt.Println("Sending a message to all clients in room")
             for client, _ := range room.Clients {
                 if err := client.Conn.WriteJSON(message); err != nil {
-                    fmt.Println(err)
                     return
                 }
             }

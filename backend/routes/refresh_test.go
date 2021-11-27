@@ -14,9 +14,7 @@ func TestTokenRefresh(t *testing.T) {
     t.Run("Testing with no token", func(t *testing.T) {
         request, _ := http.NewRequest(http.MethodGet, "/refresh", nil)
         response := httptest.NewRecorder()
-        
         Refresh(response, request)
-        
         got := response.Code
         want := 401
 
@@ -31,12 +29,10 @@ func TestTokenRefresh(t *testing.T) {
 	t.Run("Testing token with long expiry timer", func(t *testing.T) {
         request, _ := http.NewRequest(http.MethodGet, "/refresh", nil)
         response := httptest.NewRecorder()
-		
 		cookie := http.Cookie{Name: "token", Value: GenerateTokenString()}
 		request.AddCookie(&cookie)
         
 		Refresh(response, request)
-        
         got := response.Code
         want := 400
 
@@ -51,12 +47,10 @@ func TestTokenRefresh(t *testing.T) {
 	t.Run("Testing token with short expiry timer", func(t *testing.T) {
         request, _ := http.NewRequest(http.MethodGet, "/refresh", nil)
         response := httptest.NewRecorder()
-		
 		cookie := http.Cookie{Name: "token", Value: GenerateAlmostExpired()}
 		request.AddCookie(&cookie)
         
 		Refresh(response, request)
-        
         got := response.Code
         want := 200
 

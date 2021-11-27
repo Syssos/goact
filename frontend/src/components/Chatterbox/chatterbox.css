@@ -1,0 +1,12 @@
+.Chatterbox {
+	align-items: center;
+	background-color: #ffffff;
+	border-radius: 4px;
+	border: 1px solid #333;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	height: 400px;
+	justify-content: center;
+	width: 500px;
+}

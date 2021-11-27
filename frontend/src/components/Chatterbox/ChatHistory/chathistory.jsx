@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-import "./ChatHistory.scss";
+import "./chathistory.css";
 
-import Message from '../Message/Message';
+import Message from './Message';
 
 class ChatHistory extends Component {
   render() {
     const messages = this.props.chatHistory.map(msg => <Message message={msg.data} />);
-
+    
     return (
-      <div className='ChatHistory'>
-        <h2>Chat Log</h2>
-          {messages}
+      <div className="ChatHistory">
+        {messages}
       </div>
-    );
+      );
   };
 }
 

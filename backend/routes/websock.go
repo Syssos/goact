@@ -1,7 +1,6 @@
 package routes
 
 import (
-    "log"
     "fmt"
     "errors"
     "net/http"
@@ -25,7 +24,6 @@ func serveWs(room *chatroom.Room, w http.ResponseWriter, r *http.Request) {
         w.WriteHeader(http.StatusBadRequest)
         return
     }
-
     ValidatedUser, err := ValidateCookieJWT(tokenStr)
     if err != nil {
         w.WriteHeader(http.StatusUnauthorized)
@@ -65,7 +63,6 @@ func ValidateCookieJWT(tokenStr string) (string, error) {
         })
 
     if err != nil {
-        fmt.Println(err)
         return "", err
     }
 
@@ -79,7 +76,6 @@ func ValidateCookieJWT(tokenStr string) (string, error) {
 func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
     conn, err := upgrader.Upgrade(w, r, nil)
     if err != nil {
-        log.Println(err)
         return nil, err
     }
 
