@@ -1,6 +1,5 @@
-// src/components/Message/Message.jsx
 import React, { Component } from "react";
-import "./Message.scss";
+import "./message.css";
 
 class Message extends Component {
   constructor(props) {

@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import "./ChatInput.scss";
+import "./messagefield.css";
 
-class ChatInput extends Component {
+class MessageField extends Component {
   render() {
     return (
-      <div className="ChatInput">
+      <div className="MessageField">
         <input onKeyDown={this.props.send} placeholder="Send a message..."/>
       </div>
     );
-  }
+  };
 }
 
-export default ChatInput;
+export default MessageField;

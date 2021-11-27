@@ -1,12 +1,6 @@
-// App.js
-import React, { Component } from "react";
-import "./App.css";
-import { connect, sendMsg } from "./api";
-
-// Import our new component from it's relative path
-import BodyLayout from './components/BodyLayout/BodyLayout';
-import Header from './components/Header/Header';
-import LoginForm from './components/LoginForm'
+import './App.css';
+import Chatterbox from './components/Chatterbox';
+import LoginForm from './components/LoginForm';
 
 function getCookie(name) {
     var dc = document.cookie;
@@ -29,47 +23,15 @@ function getCookie(name) {
     return decodeURI(dc.substring(begin + prefix.length, end));
 }
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    // Creating single chat history instance
-    this.state = {
-      chatHistory: []
-    }
-  }
+function App() {
 
-  // Connecting to websocket
-  componentDidMount() {
-    connect((msg) => {
-      // Adding msg to chat history
-      this.setState(prevState => ({
-        chatHistory: [...this.state.chatHistory, msg]
-      }))
-    });
-  }
-
-  send(event) {
-    // Checking if enter was pressed
-    if(event.keyCode === 13) {
-      sendMsg(event.target.value);
-      event.target.value = "";
-    }
-  }
-
-  render() {
-    if(!getCookie("token")) return <LoginForm />
-    return (
-      <div className="App">
-        <Header />
-        <BodyLayout
-          chatHistory={this.state.chatHistory}
-          send={this.send}
-        />
-      </div>
-    );
-  }
+  if(!getCookie("token")) return (<div className="App"><LoginForm /></div>);
+  
+  return (
+    <div className="App">
+      <Chatterbox />
+    </div>
+  );
 }
 
 export default App;
-
-

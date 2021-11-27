@@ -1,7 +1,6 @@
 package chatroom
 
 import (
-	"fmt"
     "log"
 	
     "github.com/google/uuid"
@@ -35,6 +34,5 @@ func (c *Client) Read() {
         }
         message := Message{Type: messageType, User: c.UserName,Body: string(p)}
         c.Room.Broadcast <- message
-        fmt.Printf("Message Received: %v %v\n", message.User, message.Body)
     }
 }
