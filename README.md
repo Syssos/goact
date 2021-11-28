@@ -1,5 +1,5 @@
 # Goact ![travis-badge](https://app.travis-ci.com/Syssos/goact.svg?branch=main)
-Goact is an early stage Go + ReactJS Chat application exoskeleton. What that means is this project is intended for being a way to generate a fast, efficient, and tested chat application, and deploy within minutes after minor styling changes, via its own service or as an integration into another react app as a component.
+Goact is a concurrency favoring Go/ReactJS project exoskeleton. This essentually means it is intended for being a way to generate a fast, efficient, and tested chat component, and be able to fully intergrate it into a current front end within minutes.
 
 <p align="center">
   <img src="https://github.com/Syssos/goact/blob/main/GoactExample.png" alt="goact example img"/>
@@ -20,26 +20,34 @@ Goact is an early stage Go + ReactJS Chat application exoskeleton. What that mea
 ## Project Details
 ### Current Features:
 
-Currently this app will handle multiple users interacting within one chat room. The accounts are not managed by a database so any database required can be implemented. Residing in the [.env](https://github.com/Syssos/goact/blob/main/backend/.env) file are 2 default accounts to be used during testing.
+Currently this app will handle multiple users interacting within one chat room. The accounts are not managed by a database so any database desired to be used can be implemented fairly easily. Residing in the [.env](https://github.com/Syssos/goact/blob/main/backend/.env) file are 2 default accounts used for testing out the application and ensureing functionality is working.
 
-The React front end will prompt the user to sign in before continuing to the application. The authentication is handled by signed JWT tokens, which are saved in the browser. If a user does not have an authentic cookie when interacting with the websocket, or while attempting to make a connection, they will get redirected to the signin page.
-
-### Future Feature Plans
-
-Unit and benchmark tests are currently being worked on.
-
-After testing is added, multiple scripts are going to be written to automate the installation and configuration of a database. Data storage will be vital in implementing multiple chat rooms and will need to be configured before doing so. Databases are a vastly more secure option when dealing with a production environment, this step will be introduced to save time down the line.
+The React front end will prompt the user to sign in before continuing to the component outlining the chat feature. The authentication is handled by signed JWT tokens, which are saved in the browser as a cookie. If a user does not have an authentically signed cookie when attempting to access to the websocket connection, they will get redirected to the signin page.
 
 
 ## Running Locally
 To get this project running local start by cloning this repository to a location on your local machine.
 
-This app will rely on two services running at the same time. To start these services we will need two terminals open, on needs to be in the frontend/ directory. The other in the GoBackend/ directory.
+The Go Back end will need to be running at all times in order to have chat functionality. It is responsable for validating users, creating TCP/IP websocket connections, and tracking each chat room in a Go routine while any user is connected.
 
-### Terminal 1 (Location: '../goact/GoBackend/')
+The Front end will optain a cookie string for the current user, this string will be valid for a predetermand amount of time and the browser uses it as a sort of key to tell the server the user is the person they claim to be. 
+
+In order for the project to run both the front and back end will need to be ran, these services will run on different ports and will both need to be started in their own termian session, or have one run in the background.
+
+
+### Terminal 1 (../goact/backend/)
 
 ```bash
-go run main.go
+$ go test ./...
+
+ok      github.com/Syssos/goact
+ok      github.com/Syssos/goact/models/chatroom
+ok      github.com/Syssos/goact/routes
+
+$ go build .
+$ ./goact
+Starting server on localhost:8080
+
 ```
 
 > **Note:** This should run the 'go get' command for any needed package's that are not installed.
@@ -51,18 +59,18 @@ go run main.go
 > docker run -it -p 8080:8080 backend
 > ```
 
-### Terminal 2 (Location: '../goact/frontend/')
-The first thing we need to do to get our front end together is installing all of the packages needed for this project. The package.json file is included in this directory. Meaning the command below will get all the packages needed for the front end.
+### Terminal 2 (../goact/frontend/)
+The first thing we need to do to get our front end together is install any packages needed by this project. The package.json file will in this directory includeds all of the required dependancies meaning the npm install command can handle grabbing them for us.
 
 ```bash
 npm install
 ```
 
-Once that the packages are installed, and the backend is running in the another terminal, we can start our frontend
+With dependancies gathered, and the backend running, we can start our frontend and begin interacting with the app.
 
 ```bash
 npm start
 ```
 ## More Information
 
-For more information check out the Official Docs page for the project [here](https://docs.codyparal.com/?project=3&category=intro_ga)
+For more information on accounts, or an in-depth look at the project check out the Official Docs page for the project [here](https://docs.codyparal.com/?project=3&category=intro_ga).
