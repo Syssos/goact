@@ -3,8 +3,31 @@ import { connect, sendMsg } from "./api";
 
 import ChatHistory from './ChatHistory';
 import MessageField from './MessageField';
+import LoginForm from './LoginForm';
 
 import "./chatterbox.css";
+
+
+function getCookie(name) {
+  var dc = document.cookie;
+  var prefix = name + "=";
+  var begin = dc.indexOf("; " + prefix);
+  if (begin === -1) {
+      begin = dc.indexOf(prefix);
+      if (begin !== 0) return null;
+  }
+  else
+  {
+      begin += 2;
+      var end = document.cookie.indexOf(";", begin);
+      if (end === -1) {
+      end = dc.length;
+      }
+  }
+  // because unescape has been deprecated, replaced with decodeURI
+  //return unescape(dc.substring(begin + prefix.length, end));
+  return decodeURI(dc.substring(begin + prefix.length, end));
+}
 
 class Chatterbox extends Component {
   constructor(props) {
@@ -34,6 +57,8 @@ class Chatterbox extends Component {
   }
 
   render() {
+    if(!getCookie("token")) return (<div className="Chatterbox"><LoginForm /></div>);
+
     return (
       <div className="Chatterbox">
         <ChatHistory chatHistory={this.state.chatHistory} />
