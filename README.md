@@ -71,6 +71,3 @@ With dependancies gathered, and the backend running, we can start our frontend a
 ```bash
 npm start
 ```
-## More Information
-
-For more information on accounts, or an in-depth look at the project check out the Official Docs page for the project [here](https://docs.codyparal.com/?project=3&category=intro_ga).
